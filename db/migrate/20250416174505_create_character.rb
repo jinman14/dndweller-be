@@ -13,7 +13,6 @@ class CreateCharacter < ActiveRecord::Migration[7.1]
       t.integer :level
       t.string :race
       t.string :class_name
-      t.string :gender
 
       t.timestamps
     end
