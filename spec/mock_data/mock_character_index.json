@@ -1,0 +1,19 @@
+{
+    "data": [
+        {
+        "character_name": "Jarisemosha",
+        "class": "Bard",
+        "race": "Human",
+        "level": 3,
+        "creator_name": "The All Seer"
+        },
+        {
+        "character_name": "Anotha One",
+        "class": "Fighter",
+        "race": "Gnome",
+        "level": 3,
+        "creator_name": "The All Seer"
+        }
+    ],
+    "character_count": 2
+}
