@@ -1,9 +1,14 @@
 {
     "data": {
         "id": 1,
+        "token_url": "url here",
         "character_name": "Jarisemosha",
-        "class": "Bard",
         "level": 3,
+        "race": "Human",
+        "class": "Bard",
+        "gender": "male",
+        "speed": 30,
+        "languages": ["Common", "Gnomish"],
         "proficiency": 2,
         "armor_class": 11,
         "statistics": {
@@ -35,11 +40,6 @@
                 "range": "90 feet",//(maybe change to integer)
                 "description": "A shimmering green arrow streaks toward a target within range and bursts in a spray of acid. Make a ranged spell attack against the target. On a hit, the target takes 4d4 acid damage immediately and 2d4 acid damage at the end of its next turn. On a miss, the arrow splashes the target with acid for half as much of the initial damage and no damage at the end of its next turn."
             }
-        ],
-        "race": {
-            "name": "Human",
-            "speed": 30,
-            "languages": ["Common", "Gnomish"]
-        }
+        ]
     }
 }

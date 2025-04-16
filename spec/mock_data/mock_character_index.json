@@ -1,16 +1,20 @@
 {
     "data": [
         {
+        "token_url": "url here",
         "character_name": "Jarisemosha",
         "class": "Bard",
         "race": "Human",
+        "gender": "male",
         "level": 3,
         "creator_name": "The All Seer"
         },
         {
+        "token_url": "url here",
         "character_name": "Anotha One",
         "class": "Fighter",
         "race": "Gnome",
+        "gender": "female",
         "level": 3,
         "creator_name": "The All Seer"
         }
