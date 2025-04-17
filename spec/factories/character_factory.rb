@@ -1,5 +1,6 @@
 FactoryBot.define do 
   factory :character do
+    user
     name {'Jarisemosha'}
     level {3}
     race {"Human"}
@@ -9,7 +10,7 @@ FactoryBot.define do
     con {10}
     int {10}
     wis {10}
-    cha {10}
+    chr {10}
     ac {11}
     gender {"male"}
     token_url {"url"}
