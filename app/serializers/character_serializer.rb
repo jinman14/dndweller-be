@@ -1,5 +1,5 @@
 class CharacterSerializer
-<<<<<<< HEAD
+
   def self.format_character_list(characters)
     {
       data: characters.map do |character|
@@ -20,7 +20,7 @@ class CharacterSerializer
       character_count: characters.size
     }
   end
-=======
+
     def self.format_character_data(char)
         {
             data: {
@@ -48,5 +48,4 @@ class CharacterSerializer
             }
         }
     end
->>>>>>> main
 end
