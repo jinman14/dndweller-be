@@ -13,4 +13,8 @@ class Character < ApplicationRecord
         end
         RaceStat.where(:name => self.race.downcase)[0].speed
     end
+
+    def mapLanguages
+        self.languages.pluck("language")
+    end
 end
