@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_16_213802) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_17_181515) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,6 +21,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_16_213802) do
     t.datetime "updated_at", null: false
     t.index ["character_id"], name: "index_character_equipments_on_character_id"
     t.index ["equipment_id"], name: "index_character_equipments_on_equipment_id"
+  end
+
+  create_table "character_languages", force: :cascade do |t|
+    t.bigint "character_id", null: false
+    t.bigint "language_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["character_id"], name: "index_character_languages_on_character_id"
+    t.index ["language_id"], name: "index_character_languages_on_language_id"
   end
 
   create_table "character_skills", force: :cascade do |t|
@@ -58,6 +67,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_16_213802) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "languages", force: :cascade do |t|
+    t.string "language"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "skills", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -72,6 +87,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_16_213802) do
 
   add_foreign_key "character_equipments", "characters"
   add_foreign_key "character_equipments", "equipment"
+  add_foreign_key "character_languages", "characters"
+  add_foreign_key "character_languages", "languages"
   add_foreign_key "character_skills", "characters"
   add_foreign_key "character_skills", "skills"
   add_foreign_key "characters", "users"
