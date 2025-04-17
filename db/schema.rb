@@ -10,22 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_16_213802) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_17_224041) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "character_equipments", force: :cascade do |t|
-    t.integer "character_id", null: false
-    t.integer "equipment_id", null: false
+    t.bigint "character_id", null: false
+    t.bigint "equipment_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["character_id"], name: "index_character_equipments_on_character_id"
     t.index ["equipment_id"], name: "index_character_equipments_on_equipment_id"
   end
 
+  create_table "character_languages", force: :cascade do |t|
+    t.bigint "character_id", null: false
+    t.bigint "language_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["character_id"], name: "index_character_languages_on_character_id"
+    t.index ["language_id"], name: "index_character_languages_on_language_id"
+  end
+
   create_table "character_skills", force: :cascade do |t|
-    t.integer "character_id", null: false
-    t.integer "skill_id", null: false
+    t.bigint "character_id", null: false
+    t.bigint "skill_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["character_id"], name: "index_character_skills_on_character_id"
@@ -33,7 +42,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_16_213802) do
   end
 
   create_table "characters", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.integer "str"
     t.integer "dex"
     t.integer "int"
@@ -49,11 +58,24 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_16_213802) do
     t.datetime "updated_at", null: false
     t.string "gender"
     t.string "token_url"
+    t.integer "speed"
     t.index ["user_id"], name: "index_characters_on_user_id"
   end
 
   create_table "equipment", force: :cascade do |t|
     t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "equipment_type"
+    t.string "damage_dice"
+    t.string "damage_type"
+    t.string "range"
+    t.boolean "dex_bonus"
+    t.integer "base_ac"
+  end
+
+  create_table "languages", force: :cascade do |t|
+    t.string "language"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -62,6 +84,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_16_213802) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "level"
+    t.string "damage_type"
+    t.string "range"
+    t.string "description"
   end
 
   create_table "users", force: :cascade do |t|
@@ -72,6 +98,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_16_213802) do
 
   add_foreign_key "character_equipments", "characters"
   add_foreign_key "character_equipments", "equipment"
+  add_foreign_key "character_languages", "characters"
+  add_foreign_key "character_languages", "languages"
   add_foreign_key "character_skills", "characters"
   add_foreign_key "character_skills", "skills"
   add_foreign_key "characters", "users"
