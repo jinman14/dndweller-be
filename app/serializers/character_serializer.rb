@@ -8,7 +8,7 @@ class CharacterSerializer
           attributes: {
             token_url: character.token_url,
             character_name: character.name,
-            class: character.class_name,
+            class_name: character.class_name,
             race: character.race,
             gender: character.gender,
             level: character.level,
