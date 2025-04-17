@@ -1,4 +1,4 @@
 class CharacterLanguage < ApplicationRecord
     belongs_to :character
-    belongs_to :equipment
+    belongs_to :language
 end
