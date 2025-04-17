@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_17_181515) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_17_195535) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -65,6 +65,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_17_181515) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "type"
+    t.string "damage_dice"
+    t.string "damage_type"
+    t.string "range"
+    t.boolean "dex_bonus"
+    t.integer "base_ac"
   end
 
   create_table "languages", force: :cascade do |t|
@@ -73,10 +79,21 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_17_181515) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "race_stats", force: :cascade do |t|
+    t.string "name"
+    t.integer "speed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "skills", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "level"
+    t.string "damage_type"
+    t.string "range"
+    t.string "description"
   end
 
   create_table "users", force: :cascade do |t|
