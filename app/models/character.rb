@@ -25,4 +25,8 @@ class Character < ApplicationRecord
     def serialize_equipment
         return self.equipments.map { |equipment| EquipmentSerializer.format_equipment(equipment)[:data] }
     end
+
+    def serialize_skills
+        return self.skills.map { |skill| SkillSerializer.format_skills(skill)[:data] }
+    end
 end
