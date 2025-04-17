@@ -17,6 +17,8 @@ describe "character api", type: :request do
             get "/api/v1/characters/#{char.id}"
             json = JSON.parse(response.body, symbolize_names: true)[:data]
 
+            expect(response).to have_http_status :ok
+
             expect(json[:id]).to eq(char.id)
             expect(json[:token_url]).to eq(char.token_url)
             expect(json[:character_name]).to eq(char.name)
@@ -44,6 +46,15 @@ describe "character api", type: :request do
             expect(json[:skills][0][:damage_type]).to eq(char.skills.first.damage_type)
             expect(json[:skills][0][:range]).to eq(char.skills.first.range)
             expect(json[:skills][0][:description]).to eq(char.skills.first.description)
+        end
+
+        it "Should return a 404 error when indexing non existant character", :vcr do
+            get "/api/v1/characters/1"
+            json = JSON.parse(response.body, symbolize_names: true)
+
+            expect(response).to have_http_status :not_found
+            expect(json[:message]).to eq("Could not find Character with id 1")
+            expect(json[:status]).to eq(404)
         end
     end
 end
