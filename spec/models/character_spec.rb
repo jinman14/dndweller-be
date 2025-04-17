@@ -12,29 +12,55 @@ RSpec.describe Character, type: :model do
     end
 
     describe "instance methods" do
+        before(:each) do
+            @char = create(:character)
+        end
+
         describe "#speed" do
             it "Can return the speed of a character and add it to race stats lookup table", :vcr do
-                char = create(:character)
-                expect(char.speed).to eq(30)
+                expect(@char.speed).to eq(30)
                 expect(RaceStat.where(name:"human").pluck("speed")[0]).to eq(30)
             end
         end
 
         describe "#mapLanguages" do
             it "Can return an array of language names" do
-                char = create(:character)
                 lang = create(:language)
-                create(:character_language, character: char, language: lang)
+                create(:character_language, character: @char, language: lang)
 
-                expect(char.mapLanguages).to eq(["common"])
+                expect(@char.mapLanguages).to eq(["common"])
             end
         end
 
         describe "#proficiency" do
-            it "can return the proficiency bonus of a character based on level" do
-                char = create(:character)
+            it "Can return the proficiency bonus of a character based on level" do
+                expect(@char.proficiency).to eq(2)
+            end
+        end
 
-                expect(char.proficiency).to eq(2)
+        describe "#serialize_equipment" do
+            it "Can serialize all equipment for a given character" do
+                sword = create(:sword)
+                armor = create(:armor)
+                [sword, armor].each do |equipment|
+                    create(:character_equipment, character: @char, equipment: equipment)
+                end
+                
+                expect(@char.serialize_equipment).to eq(
+                    [
+                        {
+                            name: "Longsword",
+                            damage_dice: "1d8",
+                            damage_type: "slashing",
+                            range: 5
+                        },
+                        {
+                            name: "Leather-armor",
+                            dex_bonus: true,
+                            base_ac: 11
+                        }
+                    ]
+                )
             end
         end
     end

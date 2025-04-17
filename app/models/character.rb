@@ -21,4 +21,8 @@ class Character < ApplicationRecord
     def proficiency
         return ((self.level.to_f) / 4).ceil + 1
     end
+
+    def serialize_equipment
+        return self.equipments.map { |equipment| EquipmentSerializer.format_equipment(equipment)[:data] }
+    end
 end
