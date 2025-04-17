@@ -17,4 +17,8 @@ class Character < ApplicationRecord
     def mapLanguages
         self.languages.pluck("language")
     end
+
+    def proficiency
+        return ((self.level.to_f) / 4).ceil + 1
+    end
 end

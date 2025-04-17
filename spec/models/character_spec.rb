@@ -29,5 +29,13 @@ RSpec.describe Character, type: :model do
                 expect(char.mapLanguages).to eq(["common"])
             end
         end
+
+        describe "#proficiency" do
+            it "can return the proficiency bonus of a character based on level" do
+                char = create(:character)
+
+                expect(char.proficiency).to eq(2)
+            end
+        end
     end
 end
