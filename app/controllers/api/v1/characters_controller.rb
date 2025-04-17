@@ -4,8 +4,6 @@ class Api::V1::CharactersController < ApplicationController
   end
 
   def show
-    render json: {data: [
-      "test"
-    ]}
+    render json: CharacterSerializer.format_character_data( Character.find(params[:id]))
   end
 end
