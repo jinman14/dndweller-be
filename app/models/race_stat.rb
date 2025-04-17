@@ -1,0 +1,3 @@
+class RaceStat < ApplicationRecord
+    
+end
