@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe "character api", type: :request do
     describe "GET one character" do
-        it "Should return detailed information about one character", :vcr do
+        it "Should return detailed information about one character" do
             char = create(:character)
             sword = create(:sword)
             armor = create(:armor)
@@ -48,7 +48,7 @@ describe "character api", type: :request do
             expect(json[:skills][0][:description]).to eq(char.skills.first.description)
         end
 
-        it "Should return a 404 error when indexing non existant character", :vcr do
+        it "Should return a 404 error when indexing non existant character" do
             get "/api/v1/characters/1"
             json = JSON.parse(response.body, symbolize_names: true)
 

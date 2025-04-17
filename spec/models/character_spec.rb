@@ -16,13 +16,6 @@ RSpec.describe Character, type: :model do
             @char = create(:character)
         end
 
-        describe "#speed" do
-            it "Can return the speed of a character and add it to race stats lookup table", :vcr do
-                expect(@char.speed).to eq(30)
-                expect(RaceStat.where(name:"human").pluck("speed")[0]).to eq(30)
-            end
-        end
-
         describe "#mapLanguages" do
             it "Can return an array of language names" do
                 lang = create(:language)

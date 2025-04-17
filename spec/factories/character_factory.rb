@@ -14,5 +14,6 @@ FactoryBot.define do
     ac { 11 }
     gender { "male" }
     token_url { "url" }
+    speed { 30 }
   end
 end

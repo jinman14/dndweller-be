@@ -7,13 +7,6 @@ class Character < ApplicationRecord
     has_many :equipments, through: :character_equipments
     has_many :languages, through: :character_languages
 
-    def speed
-        if RaceStat.where(:name => self.race.downcase).empty?
-            RaceStat.create!(name: self.race.downcase, speed: CharacterGateway.fetch_speed(self.race.downcase))
-        end
-        RaceStat.where(:name => self.race.downcase)[0].speed
-    end
-
     def mapLanguages
         self.languages.pluck("language")
     end
