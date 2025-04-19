@@ -26,7 +26,11 @@ class Character < ApplicationRecord
     end
 
     def update_searchable_column
-        self.class.where(id: id).update_all(
+        self.class.reindex_searchable(self)
+    end
+        
+    def self.reindex_searchable(*records)
+        where(id: records.map(&:id)).update_all(
             "searchable = to_tsvector('english', coalesce(name, '') || ' ' || coalesce(class_name, '') || ' ' || coalesce(race, '') || ' ' || coalesce(gender, ''))"
         )
     end

@@ -25,9 +25,7 @@ describe "character api", type: :request do
       not_character = create(:character, name: "Generic Guy", race: "Human", class_name: "Fighter")
     
       # Update the `searchable` column using raw SQL to generate the tsvector properly
-      Character.where(id: [match_character.id, not_character.id]).update_all(
-        "searchable = to_tsvector('english', coalesce(name, '') || ' ' || coalesce(class_name, '') || ' ' || coalesce(race, '') || ' ' || coalesce(gender, ''))"
-      )
+      Character.reindex_searchable(match_character, not_character)
     
       get "/api/v1/characters", params: { query: "Sebastian" }
     
