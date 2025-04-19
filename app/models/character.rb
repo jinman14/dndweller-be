@@ -7,6 +7,8 @@ class Character < ApplicationRecord
     has_many :equipments, through: :character_equipments
     has_many :languages, through: :character_languages
 
+    after_save :update_searchable_column
+
     def mapLanguages
         self.languages.pluck("language")
     end
@@ -21,5 +23,15 @@ class Character < ApplicationRecord
 
     def serialize_skills
         return self.skills.map { |skill| SkillSerializer.format_skills(skill)[:data] }
+    end
+
+    def update_searchable_column
+        self.class.reindex_searchable(self)
+    end
+        
+    def self.reindex_searchable(*records)
+        where(id: records.map(&:id)).update_all(
+            "searchable = to_tsvector('english', coalesce(name, '') || ' ' || coalesce(class_name, '') || ' ' || coalesce(race, '') || ' ' || coalesce(gender, ''))"
+        )
     end
 end
