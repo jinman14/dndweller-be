@@ -18,7 +18,7 @@ describe "character api", type: :request do
       expect(json[:data].first[:attributes][:creator_name]).to eq(character.user.name)
     end
 
-    it "should return a list based on matching parameters" do
+    it "should return a list based on matching parameters, for name" do
       user = create(:user)
     
       match_character = create(:character, user: user, name: "Sebastian", race: "Elf", class_name: "Wizard")
@@ -34,6 +34,41 @@ describe "character api", type: :request do
       expect(response).to have_http_status(:ok)
       expect(json[:data].length).to eq(1)
       expect(json[:data][0][:attributes][:character_name]).to eq("Sebastian")
+    end
+
+    it "should return a list based on matching parameters, for class and all lowercase" do
+      user = create(:user)
+    
+      match_character = create(:character, user: user, name: "Sebastian", race: "Elf", class_name: "Wizard")
+      not_character = create(:character, name: "Generic Guy", race: "Human", class_name: "Fighter")
+    
+      # Update the `searchable` column using raw SQL to generate the tsvector properly
+      Character.reindex_searchable(match_character, not_character)
+    
+      get "/api/v1/characters", params: { query: "wizard" }
+    
+      json = JSON.parse(response.body, symbolize_names: true)
+    
+      expect(response).to have_http_status(:ok)
+      expect(json[:data].length).to eq(1)
+      expect(json[:data][0][:attributes][:character_name]).to eq("Sebastian")
+    end
+
+    it "should return nothing when the searched thing is not there" do
+      user = create(:user)
+    
+      match_character = create(:character, user: user, name: "Sebastian", race: "Elf", class_name: "Wizard")
+      not_character = create(:character, name: "Generic Guy", race: "Human", class_name: "Fighter")
+    
+      # Update the `searchable` column using raw SQL to generate the tsvector properly
+      Character.reindex_searchable(match_character, not_character)
+    
+      get "/api/v1/characters", params: { query: "Oorgalord" }
+    
+      json = JSON.parse(response.body, symbolize_names: true)
+    
+      expect(response).to have_http_status(:ok)
+      expect(json[:data].length).to eq(0)
     end
   end
 
