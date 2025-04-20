@@ -136,12 +136,16 @@ describe "character api", type: :request do
         second_character = create(:character, name: "Generic Guy", race: "Human", class_name: "Fighter")
 
         delete "/api/v1/characters/#{first_character.id}"
-
-        get "/api/v1/characters"
         json = JSON.parse(response.body, symbolize_names: true)
 
-        expect(json[:data].length).to eq(1)
-        expect(json[:data][:attributes].first[:name]).to eq("Generic Guy")
+        expect(response).to have_http_status :ok
+        expect(json[:message]).to eq("Character deleted")
+
+        get "/api/v1/characters"
+        jsonTwo = JSON.parse(response.body, symbolize_names: true)
+
+        expect(jsonTwo[:data].length).to eq(1)
+        expect(jsonTwo[:data][0][:attributes][:character_name]).to eq("Generic Guy")
       end
     end
 end
