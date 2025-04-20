@@ -147,5 +147,18 @@ describe "character api", type: :request do
         expect(jsonTwo[:data].length).to eq(1)
         expect(jsonTwo[:data][0][:attributes][:character_name]).to eq("Generic Guy")
       end
+
+      it "does not delete what does not exist" do
+        user = create(:user)
+    
+        first_character = create(:character, user: user, name: "Sebastian", race: "Elf", class_name: "Wizard")
+        second_character = create(:character, name: "Generic Guy", race: "Human", class_name: "Fighter")
+
+        delete "/api/v1/characters/9999999"
+        json = JSON.parse(response.body, symbolize_names: true)
+
+        expect(response).to have_http_status :not_found
+        expect(json[:error]).to eq("Character not found")
+      end
     end
 end
