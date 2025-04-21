@@ -6,4 +6,24 @@
 #
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+#   end 
+sample_user = User.create!(
+  name: "The All Seer"
+)
+
+sample_character = Character.create!(
+  user: sample_user,
+  name: "Jarisemosha",
+  level: 3,
+  race: "Human",
+  class_name: "Bard",
+  gender: "male",
+  token_url: "url here",
+  ac: 11,
+  str: 10,
+  dex: 10,
+  con: 10,
+  int: 10,
+  wis: 10,
+  chr: 10
+)

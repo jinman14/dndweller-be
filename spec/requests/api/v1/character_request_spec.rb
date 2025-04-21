@@ -1,6 +1,76 @@
 require "rails_helper"
 
 describe "character api", type: :request do
+
+  describe "GET a list of characters" do
+    it "should return a small list of all characters details for display" do
+      character = create(:character)
+      get '/api/v1/characters'
+
+      json = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to have_http_status(:ok)
+      expect(json[:data].first[:id]).to eq(character.id.to_s)
+      expect(json[:data].first[:attributes][:character_name]).to eq(character.name)
+      expect(json[:data].first[:attributes][:race]).to eq(character.race)
+      expect(json[:data].first[:attributes][:class_name]).to eq(character.class_name)
+      expect(json[:data].first[:attributes][:level]).to eq(character.level)
+      expect(json[:data].first[:attributes][:creator_name]).to eq(character.user.name)
+    end
+
+    it "should return a list based on matching parameters, for name" do
+      user = create(:user)
+    
+      match_character = create(:character, user: user, name: "Sebastian", race: "Elf", class_name: "Wizard")
+      not_character = create(:character, name: "Generic Guy", race: "Human", class_name: "Fighter")
+    
+      # Update the `searchable` column using raw SQL to generate the tsvector properly
+      Character.reindex_searchable(match_character, not_character)
+    
+      get "/api/v1/characters", params: { query: "Sebastian" }
+    
+      json = JSON.parse(response.body, symbolize_names: true)
+    
+      expect(response).to have_http_status(:ok)
+      expect(json[:data].length).to eq(1)
+      expect(json[:data][0][:attributes][:character_name]).to eq("Sebastian")
+    end
+
+    it "should return a list based on matching parameters, for class and all lowercase" do
+      user = create(:user)
+    
+      match_character = create(:character, user: user, name: "Sebastian", race: "Elf", class_name: "Wizard")
+      not_character = create(:character, name: "Generic Guy", race: "Human", class_name: "Fighter")
+    
+      # Update the `searchable` column using raw SQL to generate the tsvector properly
+      Character.reindex_searchable(match_character, not_character)
+    
+      get "/api/v1/characters", params: { query: "wizard" }
+    
+      json = JSON.parse(response.body, symbolize_names: true)
+    
+      expect(response).to have_http_status(:ok)
+      expect(json[:data].length).to eq(1)
+      expect(json[:data][0][:attributes][:character_name]).to eq("Sebastian")
+    end
+
+    it "should return nothing when the searched thing is not there" do
+      user = create(:user)
+    
+      match_character = create(:character, user: user, name: "Sebastian", race: "Elf", class_name: "Wizard")
+      not_character = create(:character, name: "Generic Guy", race: "Human", class_name: "Fighter")
+    
+      Character.reindex_searchable(match_character, not_character)
+    
+      get "/api/v1/characters", params: { query: "Oorgalord" }
+    
+      json = JSON.parse(response.body, symbolize_names: true)
+    
+      expect(response).to have_http_status(:ok)
+      expect(json[:data].length).to eq(0)
+    end
+  end
+
     describe "GET one character" do
         it "Should return detailed information about one character" do
             char = create(:character)
@@ -56,5 +126,39 @@ describe "character api", type: :request do
             expect(json[:message]).to eq("Could not find Character with id 1")
             expect(json[:status]).to eq(404)
         end
+    end
+
+    describe "DELETE one character" do
+      it "can delete a character by id" do
+        user = create(:user)
+    
+        first_character = create(:character, user: user, name: "Sebastian", race: "Elf", class_name: "Wizard")
+        second_character = create(:character, name: "Generic Guy", race: "Human", class_name: "Fighter")
+
+        delete "/api/v1/characters/#{first_character.id}"
+        json = JSON.parse(response.body, symbolize_names: true)
+
+        expect(response).to have_http_status :ok
+        expect(json[:message]).to eq("Character deleted")
+
+        get "/api/v1/characters"
+        jsonTwo = JSON.parse(response.body, symbolize_names: true)
+
+        expect(jsonTwo[:data].length).to eq(1)
+        expect(jsonTwo[:data][0][:attributes][:character_name]).to eq("Generic Guy")
+      end
+
+      it "does not delete what does not exist" do
+        user = create(:user)
+    
+        first_character = create(:character, user: user, name: "Sebastian", race: "Elf", class_name: "Wizard")
+        second_character = create(:character, name: "Generic Guy", race: "Human", class_name: "Fighter")
+
+        delete "/api/v1/characters/9999999"
+        json = JSON.parse(response.body, symbolize_names: true)
+
+        expect(response).to have_http_status :not_found
+        expect(json[:error]).to eq("Character not found")
+      end
     end
 end
