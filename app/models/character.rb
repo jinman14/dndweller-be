@@ -28,6 +28,15 @@ class Character < ApplicationRecord
     def update_searchable_column
         self.class.reindex_searchable(self)
     end
+
+    def link_languages(languages)
+        languages.each do |language|
+            language_record = Language.where(language: language)
+            return self.languages.create!(language:language) if language_record.empty?
+            CharacterLanguage.create!(character: self, language: language_record[0])
+        end
+        # binding.pry
+    end
         
     def self.reindex_searchable(*records)
         where(id: records.map(&:id)).update_all(

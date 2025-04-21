@@ -75,5 +75,26 @@ RSpec.describe Character, type: :model do
                 )
             end
         end
+
+        describe "#link_languages" do
+            it "can create a link to a language" do
+                char = create(:character)
+                common = create(:language)
+
+                char.link_languages(["common"])
+
+                expect(char.languages).to include(common)
+                expect(Language.all.length).to eq(1)
+            end
+
+            it "can create a language if one is not already recorded" do
+                char = create(:character)
+
+                char.link_languages(["common"])
+
+                expect(char.languages).to include(Language.where(language:"common").first)
+                expect(Language.all.length).to eq(1)
+            end
+        end
     end
 end
