@@ -20,6 +20,7 @@ sample_character = Character.create!(
   gender: "male",
   token_url: "url here",
   ac: 11,
+  hp: 20,
   str: 10,
   dex: 10,
   con: 10,
