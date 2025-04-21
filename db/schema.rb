@@ -15,8 +15,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_17_235100) do
   enable_extension "plpgsql"
 
   create_table "character_equipments", force: :cascade do |t|
-    t.integer "character_id", null: false
-    t.integer "equipment_id", null: false
+    t.bigint "character_id", null: false
+    t.bigint "equipment_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["character_id"], name: "index_character_equipments_on_character_id"
@@ -33,8 +33,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_17_235100) do
   end
 
   create_table "character_skills", force: :cascade do |t|
-    t.integer "character_id", null: false
-    t.integer "skill_id", null: false
+    t.bigint "character_id", null: false
+    t.bigint "skill_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["character_id"], name: "index_character_skills_on_character_id"
@@ -42,7 +42,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_17_235100) do
   end
 
   create_table "characters", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.integer "str"
     t.integer "dex"
     t.integer "int"
