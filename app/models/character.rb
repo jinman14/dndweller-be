@@ -60,6 +60,24 @@ class Character < ApplicationRecord
             end
         end
     end
+
+    def link_skills(skills)
+        skills.each do |skill|
+            skill_record = Skill.where(name:skill[:name])
+
+            if skill_record.empty?
+                self.skills.create!(
+                    name:skill[:name],
+                    level:skill[:level],
+                    damage_type:skill[:damage_type],
+                    range:skill[:range],
+                    description:skill[:description]
+                )
+            else
+                CharacterSkill.create!(character:self, skill:skill_record[0])
+            end
+        end
+    end
         
     def self.reindex_searchable(*records)
         where(id: records.map(&:id)).update_all(
