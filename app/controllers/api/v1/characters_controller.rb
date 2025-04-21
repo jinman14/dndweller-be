@@ -25,7 +25,11 @@ class Api::V1::CharactersController < ApplicationController
     end
   end
 
-  def create 
+  def create
+    if !Character.validate_params(params.keys).empty?
+      return render json: {status:404, error:"Missing parameters for character creation"}, status:400
+    end
+
     char_p = character_params
     char = Character.create!(
       user_id: char_p[:user_id],
@@ -72,7 +76,7 @@ class Api::V1::CharactersController < ApplicationController
       :int,
       :wis,
       :cha,
-      :user_id,
+      :user_id
     )
   end
 end

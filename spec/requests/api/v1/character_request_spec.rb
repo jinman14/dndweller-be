@@ -171,10 +171,21 @@ describe "character api", type: :request do
         post "/api/v1/characters", params: char_params
         json = JSON.parse(response.body, symbolize_names: true)
 
+        expect(response).to have_http_status :ok
         expect(Character.all.length).to eq(1)
         expect(Equipment.all.length).to eq(2)
         expect(Skill.all.length).to eq(1)
         expect(Language.all.length).to eq(2)
+      end
+
+      it "returns a 400 error when not all params are given" do
+        user = create(:user)
+        
+        post "/api/v1/characters"
+        json = JSON.parse(response.body, symbolize_names: true)
+
+        expect(response).to have_http_status 400
+        expect(json[:error]).to eq("Missing parameters for character creation")
       end
     end
 end

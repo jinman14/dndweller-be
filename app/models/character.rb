@@ -84,4 +84,34 @@ class Character < ApplicationRecord
             "searchable = to_tsvector('english', coalesce(name, '') || ' ' || coalesce(class_name, '') || ' ' || coalesce(race, '') || ' ' || coalesce(gender, ''))"
         )
     end
+
+    def self.validate_params(params)
+        required = [
+        "token",
+        "name",
+        "level",
+        "hp",
+        "race",
+        "class",
+        "gender",
+        "speed",
+        "armor_class",
+        "str",
+        "dex",
+        "con",
+        "int",
+        "wis",
+        "cha",
+        "user_id",
+        "equipment",
+        "skills",
+        "languages"
+    ]
+
+        params.each do |param|
+            required.delete(param)
+        end
+
+        return required
+    end
 end
