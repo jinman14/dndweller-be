@@ -2,6 +2,7 @@
     "token": "url here",
     "name": "Jarisemosha",
     "level": 3,
+    "hp": 10,
     "race": "Human",
     "class": "Bard",
     "gender":"male",
