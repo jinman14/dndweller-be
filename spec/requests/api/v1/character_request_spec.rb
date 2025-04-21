@@ -60,7 +60,6 @@ describe "character api", type: :request do
       match_character = create(:character, user: user, name: "Sebastian", race: "Elf", class_name: "Wizard")
       not_character = create(:character, name: "Generic Guy", race: "Human", class_name: "Fighter")
     
-      # Update the `searchable` column using raw SQL to generate the tsvector properly
       Character.reindex_searchable(match_character, not_character)
     
       get "/api/v1/characters", params: { query: "Oorgalord" }
@@ -127,5 +126,39 @@ describe "character api", type: :request do
             expect(json[:message]).to eq("Could not find Character with id 1")
             expect(json[:status]).to eq(404)
         end
+    end
+
+    describe "DELETE one character" do
+      it "can delete a character by id" do
+        user = create(:user)
+    
+        first_character = create(:character, user: user, name: "Sebastian", race: "Elf", class_name: "Wizard")
+        second_character = create(:character, name: "Generic Guy", race: "Human", class_name: "Fighter")
+
+        delete "/api/v1/characters/#{first_character.id}"
+        json = JSON.parse(response.body, symbolize_names: true)
+
+        expect(response).to have_http_status :ok
+        expect(json[:message]).to eq("Character deleted")
+
+        get "/api/v1/characters"
+        jsonTwo = JSON.parse(response.body, symbolize_names: true)
+
+        expect(jsonTwo[:data].length).to eq(1)
+        expect(jsonTwo[:data][0][:attributes][:character_name]).to eq("Generic Guy")
+      end
+
+      it "does not delete what does not exist" do
+        user = create(:user)
+    
+        first_character = create(:character, user: user, name: "Sebastian", race: "Elf", class_name: "Wizard")
+        second_character = create(:character, name: "Generic Guy", race: "Human", class_name: "Fighter")
+
+        delete "/api/v1/characters/9999999"
+        json = JSON.parse(response.body, symbolize_names: true)
+
+        expect(response).to have_http_status :not_found
+        expect(json[:error]).to eq("Character not found")
+      end
     end
 end

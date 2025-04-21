@@ -12,4 +12,15 @@ class Api::V1::CharactersController < ApplicationController
   def show
     render json: CharacterSerializer.format_character_data( Character.find(params[:id]))
   end
+
+  def destroy
+    character = Character.find_by(id: params[:id])
+
+    if character
+      character.destroy
+      render json: { message: "Character deleted" }, status: :ok
+    else
+      render json: { error: "Character not found" }, status: :not_found
+    end
+  end
 end
