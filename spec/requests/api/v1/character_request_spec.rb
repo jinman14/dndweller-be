@@ -161,4 +161,19 @@ describe "character api", type: :request do
         expect(json[:error]).to eq("Character not found")
       end
     end
+
+    describe "POST one character" do
+      it "can create a character from a given list of parameters" do
+        char_params = JSON.parse(File.read("spec/mock_data/mock_character_create.json"), symbolize_names: true)
+        expected_response = JSON.parse(File.read("spec/mock_data/mock_character_show.json"), symbolize_names: true)
+        
+        post "/api/v1/characters", params: char_params
+        json = JSON.parse(response.body)
+
+        expect(json).to eq(expected_response)
+        expect(Character.all.length).to eq(1)
+        expect(Equipment.all.length).to eq(2)
+        expect(Skill.all.length).to eq(1)
+      end
+    end
 end
