@@ -96,5 +96,51 @@ RSpec.describe Character, type: :model do
                 expect(Language.all.length).to eq(1)
             end
         end
+
+        describe "#link_equipment" do
+            it "can create a link to a piece of equipment" do
+                char = create(:character)
+                sword = create(:sword)
+                armor = create(:armor)
+
+                char.link_equipment([{
+                    name: "Longsword",
+                    damage_dice: "1d8",
+                    damage_type: "slashing",
+                    range: 5
+                },
+                {
+                    name: "Leather-armor",
+                    base: 11,
+                    dex_bonus: true
+                }
+                ]) 
+
+                expect(char.equipments.pluck("name")).to eq(["Longsword", "Leather-armor"])
+                expect(Equipment.all.length).to eq(2)
+                expect(Equipment.first.equipment_type).to eq("weapon")
+            end
+
+            it "can create records for equipment that does not yet exist" do
+                char = create(:character)
+
+                char.link_equipment([{
+                    name: "Longsword",
+                    damage_dice: "1d8",
+                    damage_type: "slashing",
+                    range: 5
+                },
+                {
+                    name: "Leather-armor",
+                    base: 11,
+                    dex_bonus: true
+                }
+                ]) 
+
+                expect(char.equipments.pluck("name")).to eq(["Longsword", "Leather-armor"])
+                expect(Equipment.all.length).to eq(2)
+                expect(Equipment.first.equipment_type).to eq("weapon")
+            end
+        end
     end
 end

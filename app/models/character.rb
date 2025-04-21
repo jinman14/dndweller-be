@@ -32,10 +32,33 @@ class Character < ApplicationRecord
     def link_languages(languages)
         languages.each do |language|
             language_record = Language.where(language: language)
-            return self.languages.create!(language:language) if language_record.empty?
-            CharacterLanguage.create!(character: self, language: language_record[0])
+            
+            if language_record.empty?
+                self.languages.create!(language:language) 
+            else
+                CharacterLanguage.create!(character: self, language: language_record[0])
+            end
         end
         # binding.pry
+    end
+
+    def link_equipment(equipments)
+        equipments.each do |equipment|
+            equipment_record = Equipment.where(name:equipment[:name])
+
+            if equipment_record.empty?
+                self.equipments.create!(
+                        name: equipment[:name],
+                        damage_dice: equipment[:damage_dice],
+                        damage_type: equipment[:damage_type],
+                        range: equipment[:range],
+                        base_ac: equipment[:base],
+                        dex_bonus: equipment[:dex_bonus],
+                        equipment_type: equipment[:damage_dice] ? "weapon" : "armor")
+            else
+                CharacterEquipment.create(character:self, equipment:equipment_record[0])
+            end
+        end
     end
         
     def self.reindex_searchable(*records)
