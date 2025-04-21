@@ -35,6 +35,7 @@ class CharacterSerializer
                 languages: char.mapLanguages,
                 proficiency: char.proficiency,
                 armor_class: char.ac,
+                health_points: char.hp,
                 statistics: {
                     str: char.str,
                     dex: char.dex,
