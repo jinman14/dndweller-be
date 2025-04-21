@@ -75,5 +75,106 @@ RSpec.describe Character, type: :model do
                 )
             end
         end
+
+        describe "#link_languages" do
+            it "can create a link to a language" do
+                char = create(:character)
+                common = create(:language)
+
+                char.link_languages(["common"])
+
+                expect(char.languages).to include(common)
+                expect(Language.all.length).to eq(1)
+            end
+
+            it "can create a language if one is not already recorded" do
+                char = create(:character)
+
+                char.link_languages(["common"])
+
+                expect(char.languages).to include(Language.where(language:"common").first)
+                expect(Language.all.length).to eq(1)
+            end
+        end
+
+        describe "#link_equipment" do
+            it "can create a link to a piece of equipment" do
+                char = create(:character)
+                sword = create(:sword)
+                armor = create(:armor)
+
+                char.link_equipment([{
+                    name: "Longsword",
+                    damage_dice: "1d8",
+                    damage_type: "slashing",
+                    range: 5
+                },
+                {
+                    name: "Leather-armor",
+                    base: 11,
+                    dex_bonus: true
+                }
+                ]) 
+
+                expect(char.equipments.pluck("name")).to eq(["Longsword", "Leather-armor"])
+                expect(Equipment.all.length).to eq(2)
+                expect(Equipment.first.equipment_type).to eq("weapon")
+            end
+
+            it "can create records for equipment that does not yet exist" do
+                char = create(:character)
+
+                char.link_equipment([{
+                    name: "Longsword",
+                    damage_dice: "1d8",
+                    damage_type: "slashing",
+                    range: 5
+                },
+                {
+                    name: "Leather-armor",
+                    base: 11,
+                    dex_bonus: true
+                }
+                ]) 
+
+                expect(char.equipments.pluck("name")).to eq(["Longsword", "Leather-armor"])
+                expect(Equipment.all.length).to eq(2)
+                expect(Equipment.first.equipment_type).to eq("weapon")
+                expect(Equipment.last.equipment_type).to eq("armor")
+            end
+        end
+
+        describe "#link_skills" do
+            it "can create a link to a skill" do
+                char = create(:character)
+                acid = create(:skill)
+
+                char.link_skills([{
+                    name: "Acid-Arrow",
+                    level: 2,
+                    damage_type: "acid",
+                    range: "90 feet",
+                    description: "A shimmering green arrow streaks toward a target within range and bursts in a spray of acid. Make a ranged spell attack against the target. On a hit, the target takes 4d4 acid damage immediately and 2d4 acid damage at the end of its next turn. On a miss, the arrow splashes the target with acid for half as much of the initial damage and no damage at the end of its next turn."
+                }])
+
+                expect(Skill.all.length).to eq(1)
+                expect(char.skills.first.name).to eq("Acid-Arrow")
+            end
+
+            it "can create a skill if no record exists" do
+                char = create(:character)
+
+                char.link_skills([{
+                    name: "Acid-Arrow",
+                    level: 2,
+                    damage_type: "acid",
+                    range: "90 feet",
+                    description: "A shimmering green arrow streaks toward a target within range and bursts in a spray of acid. Make a ranged spell attack against the target. On a hit, the target takes 4d4 acid damage immediately and 2d4 acid damage at the end of its next turn. On a miss, the arrow splashes the target with acid for half as much of the initial damage and no damage at the end of its next turn."
+                }])
+
+                expect(Skill.all.length).to eq(1)
+                expect(char.skills.first.name).to eq("Acid-Arrow")
+            end
+        end
     end
 end

@@ -4,6 +4,7 @@
         "token_url": "url here",
         "character_name": "Jarisemosha",
         "level": 3,
+        "health_points": 10,
         "race": "Human",
         "class": "Bard",
         "gender": "male",
@@ -28,16 +29,16 @@
             },
             {
                 "name": "Leather Armor",
-                "base": 11,
+                "base_ac": 11,
                 "dex_bonus": true
             }
         ],
-        "skills(maybe change to spells later)": [
+        "skills": [
             {
                 "name": "Acid-Arrow",
                 "level": 2,
                 "damage_type": "acid",
-                "range": "90 feet",//(maybe change to integer)
+                "range": "90 feet",
                 "description": "A shimmering green arrow streaks toward a target within range and bursts in a spray of acid. Make a ranged spell attack against the target. On a hit, the target takes 4d4 acid damage immediately and 2d4 acid damage at the end of its next turn. On a miss, the arrow splashes the target with acid for half as much of the initial damage and no damage at the end of its next turn."
             }
         ]
