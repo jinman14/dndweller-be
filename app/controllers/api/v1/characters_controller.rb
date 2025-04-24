@@ -27,7 +27,7 @@ class Api::V1::CharactersController < ApplicationController
 
   def create
     if !Character.validate_params(params.keys).empty?
-      return render json: {status:404, error:"Missing parameters for character creation"}, status:400
+      return render json: {status:400, error:"Missing parameters: #{Character.validate_params(params.keys)} for character creation"}, status:400
     end
 
     char_p = character_params
