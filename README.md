@@ -96,7 +96,7 @@ All endpoints are namespaced under: `/api/v1`
   |------|------|
   | Front-End - UI Design & Styling | Shadeau Christensen |
   | Back-End - Routing & Navigation & Setup | Sebastian McKee |
-  | Full-Stack - Testing & Error Handling | Jacob Inman |
+  | Full-Stack - Testing & Error Handling & Project Visionary | Jacob Inman |
   | Back-End - API Integration & Setup | Rig Freyr |
   | Full-Stack - Deployement and BE Communications | Montana Pfeifer |
 
