@@ -25,7 +25,7 @@ The backend API for **DnDwellers**, a customizable Dungeons & Dragons character 
 ## Setup & Installation
 
 1. Clone the repository
-`git clone https://github.com/YOUR-BE-REPO-HERE.git`
+`git clone`
 
 2. Navigate into the project folder
 `cd dndweller-be`
